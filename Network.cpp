@@ -61,7 +61,8 @@ void Network::SGD(const std::vector<std::pair<Eigen::VectorXd, Eigen::VectorXd>>
 
     for (int j = 0; j < epochs; ++j)
     {
-        std::random_shuffle(trainingDataCopy.begin(), trainingDataCopy.end());
+        std::shuffle(trainingDataCopy.begin(), trainingDataCopy.end(), std::mt19937{std::random_device{}()});
+
         std::vector<std::vector<std::pair<Eigen::VectorXd, Eigen::VectorXd>>> miniBatches;
         for (size_t k = 0; k < trainingDataCopy.size(); k += miniBatchSize)
         {
@@ -141,9 +142,11 @@ int Network::evaluate(const std::vector<std::pair<Eigen::VectorXd, Eigen::Vector
         if (predictedLabel == trueLabel)
         {
             correct++;
-        }else{
-            //This prints if the answer is incorrect
-            //std::cout << "Predicted: " << predictedLabel << "\n" << "True label: " << trueLabel << "\n";
+        }
+        else
+        {
+            // This prints if the answer is incorrect
+            // std::cout << "Predicted: " << predictedLabel << "\n" << "True label: " << trueLabel << "\n";
         }
     }
 

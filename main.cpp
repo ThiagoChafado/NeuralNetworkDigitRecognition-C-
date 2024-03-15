@@ -6,6 +6,7 @@
 // Function to read IDX3-UBYTE files
 std::vector<std::vector<unsigned char>> readIDX3UByteFile(const std::string &filename)
 {
+    //Open in binary mode
     std::ifstream file(filename, std::ios::binary);
 
     if (!file)
@@ -14,7 +15,8 @@ std::vector<std::vector<unsigned char>> readIDX3UByteFile(const std::string &fil
         return {};
     }
 
-    // Read the IDX3-UBYTE file header
+    // Read the IDX3-UBYTE file header 
+    //The structure of the header is in the mnist website
     char magicNumber[4];
     char numImagesBytes[4];
     char numRowsBytes[4];
@@ -88,7 +90,7 @@ std::vector<std::vector<unsigned char>> readLabelFile(const std::string &filenam
 
 int main()
 {
-    // Leia os dados MNIST
+    // Mnist
     std::string filename = "/home/thiagoalmeida/Desktop/Projects/NeuralDigitRecognition/data/train-images-idx3-ubyte/train-images.idx3-ubyte";
     std::string label_filename = "/home/thiagoalmeida/Desktop/Projects/NeuralDigitRecognition/data/train-labels-idx1-ubyte/train-labels.idx1-ubyte";
     std::vector<std::vector<unsigned char>> imagesFile = readIDX3UByteFile(filename);
@@ -109,7 +111,7 @@ int main()
     }
 
     // 80% training,20% test
-    std::random_shuffle(training_data.begin(), training_data.end());
+    std::shuffle(training_data.begin(), training_data.end(), std::mt19937{std::random_device{}()});
     size_t split_index = static_cast<size_t>(0.8 * training_data.size());
     std::vector<std::pair<Eigen::VectorXd, Eigen::VectorXd>> training_set(training_data.begin(), training_data.begin() + split_index);
     std::vector<std::pair<Eigen::VectorXd, Eigen::VectorXd>> test_set(training_data.begin() + split_index, training_data.end());
